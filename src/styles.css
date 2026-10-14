@@ -182,7 +182,9 @@
 @keyframes k-noise { 0%,100% { transform: translate(0,0) } 25% { transform: translate(-3%,2%) } 50% { transform: translate(2%,-3%) } 75% { transform: translate(-2%,-1%) } }
 @keyframes k-breathe { 0%,100% { letter-spacing: 0 } 50% { letter-spacing: .06em } }
 
-.portfolio:not(.motion-reduced) section { transform: skewY(var(--scroll-skew)); transition: transform .1s linear; }
+.zoom-layer { will-change: transform, opacity, filter; }
+.zoom-layer > * { transform: translateY(calc(var(--e, 0) * var(--k, 1) * 140px)) scale(calc(1 - var(--e, 0) * .25)); opacity: calc(1 - var(--e, 0) * 1.2); }
+.zoom-layer > *:nth-child(2) { --k: 2; } .zoom-layer > *:nth-child(3) { --k: 3; } .zoom-layer > *:nth-child(4) { --k: 4; } .zoom-layer > *:nth-child(n+5) { --k: 5; }
 .portfolio:not(.motion-reduced) .hero-title { animation: k-glitch 2.4s infinite steps(1), k-float 3s ease-in-out infinite; display: inline-block; }
 .portfolio:not(.motion-reduced) .hero-title span { display: inline-block; animation: k-pulse .6s ease-in-out infinite, k-hue 1.2s infinite; }
 .portfolio:not(.motion-reduced) .hero-subtitle { animation: k-breathe 3s ease-in-out infinite; }
