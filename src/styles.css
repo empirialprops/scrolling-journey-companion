@@ -253,3 +253,10 @@
 .intro-option strong { font-family: var(--font-display); font-size: 40px; font-weight: 400; line-height: 1; }
 .intro-option.kinetic strong { color: var(--primary); }
 .intro-option span { font-size: 14px; color: var(--muted-foreground); }
+.intro-option:nth-child(3) { animation-delay: .24s; }
+.intro-world { width: 260px; align-items: flex-start; }
+.intro-world-symbol { font-family: var(--font-display); font-size: 34px; color: var(--primary); line-height: 1; }
+.intro-world strong { font-size: 26px; }
+.intro-worlds .intro-option:hover .intro-world-symbol { animation: k-spin 1.2s infinite linear; display: inline-block; }
+.intro-back { background: none; border: none; color: var(--muted-foreground); cursor: pointer; font: inherit; font-size: 13px; letter-spacing: .15em; transition: color .3s; }
+.intro-back:hover { color: var(--primary); }

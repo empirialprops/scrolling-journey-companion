@@ -67,7 +67,7 @@ function Portfolio() {
   return <>
     <RideScene progress={progress} reduced={reduced} specialty={specialty} />
     {!reduced && mode && <KineticLayer />}
-    {!mode && <IntroGate onPick={m => { setMode(m); setReduced(m === 'static'); window.scrollTo(0, 0); }} />}
+    {!mode && <IntroGate onPick={(m, world) => { setMode(m); setReduced(m === 'static'); setSpecialty(world); window.scrollTo(0, 0); }} />}
     <div className="coordinates">INDEPENDENT DEVELOPER — DIGITAL EXPLORER</div>
     <div className="chapter-rail">{chapters.map((id, i) => <a key={id} href={`#${id}`} className={active === i ? 'active' : ''} aria-label={`Go to ${id}`} aria-current={active === i ? 'location' : undefined} />)}</div>
     <main className={`portfolio ${reduced ? 'motion-reduced' : ''}`} ref={main}>
