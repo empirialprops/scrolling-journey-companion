@@ -36,6 +36,28 @@ export function KineticLayer() {
       const v = scrollY - lastY; lastY = scrollY;
       skew += (Math.max(-12, Math.min(12, v * .25)) - skew) * .12;
       document.documentElement.style.setProperty('--scroll-skew', `${skew}deg`);
+      const vh = innerHeight;
+      document.querySelectorAll<HTMLElement>('.portfolio > section, .portfolio > footer').forEach(el => {
+        el.classList.add('zoom-layer');
+        el.style.transform = '';
+        const r = el.getBoundingClientRect();
+        let y = 0, s = 1, o = 1, b = 0, e = 0, z = 1, rot = 0;
+        if (r.top > 0) { // approaching from deep inside
+          e = Math.min(r.top / vh, 1);
+          y = -r.top; s = Math.max(.05, 1 - e * .95); o = 1 - e; b = e * 14; z = 1; rot = e * 25;
+        } else if (r.bottom < vh) { // flying past the camera
+          const x = Math.min((vh - r.bottom) / vh, 1);
+          y = vh - r.bottom; s = 1 + x * x * 6; o = 1 - x * 1.1; b = x * 8; z = 2; rot = -x * 10;
+        }
+        const originY = vh / 2 - r.top - y;
+        el.style.transformOrigin = `50% ${originY}px`;
+        el.style.transform = `translateY(${y}px) scale(${s}) rotate(${rot}deg)`;
+        el.style.opacity = `${Math.max(0, o)}`;
+        el.style.filter = b > .2 ? `blur(${b}px)` : '';
+        el.style.zIndex = `${z}`;
+        el.style.pointerEvents = o < .4 ? 'none' : '';
+        el.style.setProperty('--e', `${e}`);
+      });
       const max = document.documentElement.scrollHeight - innerHeight;
       if (bar.current) bar.current.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
       raf = requestAnimationFrame(loop);
