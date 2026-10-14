@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { RideScene } from '@/components/RideScene';
 import { KineticLayer } from '@/components/KineticLayer';
+import { IntroGate } from '@/components/IntroGate';
 import { journeyProgress, specialties, type Specialty } from '@/lib/journey';
 import { useCinematicScroll } from '@/hooks/use-cinematic-scroll';
 
@@ -34,12 +35,12 @@ function Portfolio() {
   const chapters = specialty ? ['intro', 'about', 'work', 'journey', 'contact'] : ['intro', 'about', 'work'];
   const [active, setActive] = useState(0);
   const [reduced, setReduced] = useState(false);
+  const [mode, setMode] = useState<'static' | 'kinetic' | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
   useCinematicScroll(main, reduced, specialty);
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(preference.matches);
-    const change = () => setReduced(preference.matches);
+    const change = () => {};
     preference.addEventListener('change', change);
     const onScroll = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -65,7 +66,8 @@ function Portfolio() {
   }, [specialty]);
   return <>
     <RideScene progress={progress} reduced={reduced} specialty={specialty} />
-    {!reduced && <KineticLayer />}
+    {!reduced && mode && <KineticLayer />}
+    {!mode && <IntroGate onPick={m => { setMode(m); setReduced(m === 'static'); window.scrollTo(0, 0); }} />}
     <div className="coordinates">INDEPENDENT DEVELOPER — DIGITAL EXPLORER</div>
     <div className="chapter-rail">{chapters.map((id, i) => <a key={id} href={`#${id}`} className={active === i ? 'active' : ''} aria-label={`Go to ${id}`} aria-current={active === i ? 'location' : undefined} />)}</div>
     <main className={`portfolio ${reduced ? 'motion-reduced' : ''}`} ref={main}>
@@ -105,6 +107,7 @@ function Portfolio() {
           <p className="branch-description" data-pop="180">{selected.description}</p>
           <a href="#deep-dive" className="scroll-label"><ArrowDown size={14} /> INTO {selected.label.toUpperCase()}</a>
         </div>
+        <div className="project-wall section"><div className="section-heading"><span>WORK — {selected.label.toUpperCase()}</span><span>{selected.projects.length} PROJECT{selected.projects.length > 1 ? 'S' : ''}</span></div><div className="project-grid">{selected.projects.map((p, i) => { const inner = <><span className="project-index">{String(i + 1).padStart(2, '0')}</span><h3>{p.name}</h3><p>{p.role}</p>{p.url && <ArrowUpRight className="project-arrow" />}</>; return p.url ? <a key={p.name} href={p.url} target="_blank" rel="noreferrer" className="project-card" style={{ animationDelay: `${i * .08}s` }}>{inner}</a> : <div key={p.name} className="project-card" style={{ animationDelay: `${i * .08}s` }}>{inner}</div>; })}</div></div>
         <div id="deep-dive" className="branch-beats">{selected.scenes.map((title, i) => <section className="journey-beat" key={title}><div className="beat-content"><span className="beat-index">{selected.number}.{i + 1} / {selected.skills[i]}</span><h3 data-pop="450">{title}</h3><span className="beat-symbol" data-pop="650" aria-hidden="true">{selected.symbol}</span></div></section>)}</div>
       </section>
       <section id="contact" className="section contact-section">
