@@ -4,6 +4,7 @@ import { ArrowDown, ArrowDownRight, ArrowUpRight, Code2, Layers3, Box, Pause, Pl
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { RideScene } from '@/components/RideScene';
+import { KineticLayer } from '@/components/KineticLayer';
 import { journeyProgress, specialties, type Specialty } from '@/lib/journey';
 import { useCinematicScroll } from '@/hooks/use-cinematic-scroll';
 
@@ -64,6 +65,7 @@ function Portfolio() {
   }, [specialty]);
   return <>
     <RideScene progress={progress} reduced={reduced} specialty={specialty} />
+    {!reduced && <KineticLayer />}
     <div className="coordinates">INDEPENDENT DEVELOPER — DIGITAL EXPLORER</div>
     <div className="chapter-rail">{chapters.map((id, i) => <a key={id} href={`#${id}`} className={active === i ? 'active' : ''} aria-label={`Go to ${id}`} aria-current={active === i ? 'location' : undefined} />)}</div>
     <main className={`portfolio ${reduced ? 'motion-reduced' : ''}`} ref={main}>
