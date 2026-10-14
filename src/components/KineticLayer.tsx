@@ -70,7 +70,7 @@ export function KineticLayer() {
     addEventListener('pointermove', move);
     addEventListener('pointerdown', burst);
     raf = requestAnimationFrame(loop);
-    return () => { cancelAnimationFrame(raf); removeEventListener('pointermove', move); removeEventListener('pointerdown', burst); io.disconnect(); mo.disconnect(); };
+    return () => { document.querySelectorAll<HTMLElement>('.zoom-layer').forEach(el => { el.classList.remove('zoom-layer'); el.removeAttribute('style'); }); cancelAnimationFrame(raf); removeEventListener('pointermove', move); removeEventListener('pointerdown', burst); io.disconnect(); mo.disconnect(); };
   }, []);
   return <>
     <div className="kinetic-bar" ref={bar} />
