@@ -51,6 +51,7 @@ function FlyThrough({ travel, reduced, specialty, colors }: { travel: RefObject<
 function World({ progress, reduced, specialty, colors }: { progress: RefObject<number>; reduced: boolean; specialty: Specialty | null; colors: SceneColors }) {
   const group = useRef<THREE.Group>(null);
   const travel = useRef({ position: 0, velocity: 0 });
+  const rings = useRef<THREE.Group>(null);
   const bank = useRef(0);
   const speed = useRef(0);
   const target = useMemo(() => new THREE.Vector3(), []);
@@ -87,7 +88,18 @@ function World({ progress, reduced, specialty, colors }: { progress: RefObject<n
       camera.fov = THREE.MathUtils.damp(camera.fov, 43 + speed.current * 24, 5, delta);
       camera.updateProjectionMatrix();
     }
-    if (group.current && !reduced) group.current.rotation.y += delta * (.12 + speed.current * .9);
+    if (group.current && !reduced) {
+      const now = performance.now() / 1000;
+      group.current.rotation.y += delta * (.8 + speed.current * 2.5);
+      group.current.rotation.x += delta * .4;
+      group.current.scale.setScalar(1 + Math.sin(now * 3) * .12);
+      camera.position.x += Math.sin(now * 1.3) * .35;
+      camera.position.y += Math.cos(now * 1.7) * .25;
+    }
+    if (rings.current && !reduced) rings.current.children.forEach((ring, i) => {
+      ring.rotation.z += delta * (i % 2 ? 1.5 : -1.2);
+      ring.rotation.x += delta * .6;
+    });
   });
   return <>
     <FlyThrough travel={travel} reduced={reduced} specialty={specialty} colors={colors} />
@@ -106,10 +118,10 @@ function World({ progress, reduced, specialty, colors }: { progress: RefObject<n
       <mesh rotation={[.4, .1, .65]}><torusKnotGeometry args={[3.4, .065, 220, 8, 2, 3]} /><meshStandardMaterial color={colors.chrome} metalness={.95} roughness={.13} /></mesh>
     </group>
     {rails.map((curve, i) => <mesh key={i}><tubeGeometry args={[curve, 240, .055, 6, false]} /><meshStandardMaterial color={i ? colors.chrome : colors.ember} metalness={.8} roughness={.2} /></mesh>)}
-    {Array.from({ length: 12 }, (_, i) => <group key={i} position={[Math.sin(i * 1.8) * 5, Math.cos(i * 1.4) * 3, -9 - i * 3]} rotation={[i * .18, i * .3, i * .4]}>
+    <group ref={rings}>{Array.from({ length: 12 }, (_, i) => <group key={i} position={[Math.sin(i * 1.8) * 5, Math.cos(i * 1.4) * 3, -9 - i * 3]} rotation={[i * .18, i * .3, i * .4]}>
       <mesh><torusGeometry args={[2.5 + i % 3, .065, 8, 64]} /><meshStandardMaterial color={i % 3 === 0 ? colors.ember : colors.muted} metalness={.7} roughness={.28} /></mesh>
       {i % 3 === 0 && <mesh position={[3.5, 1, 0]}><icosahedronGeometry args={[.7, 0]} /><meshStandardMaterial color={colors.chrome} metalness={.85} roughness={.2} /></mesh>}
-    </group>)}
+    </group>)}</group>
   </>;
 }
 

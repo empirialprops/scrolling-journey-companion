@@ -165,3 +165,61 @@
   .section { padding: 65px 7%; min-height: 900px; } .section-title { font-size: 76px; margin-top: 50px; } .about-layout { grid-template-columns: 1fr; gap: 10px; } .about-copy { font-size: 16px; } .capability-list { grid-template-columns: 1fr; margin-top: 45px; } .capability, .capability + .capability { padding: 22px 0; display: grid; grid-template-columns: 35px 1fr; gap: 0 12px; } .capability svg { margin-bottom: 0; margin-top: 5px; } .capability h3 { font-size: 28px; } .capability p { grid-column: 2; max-width: none; margin-top: 5px; } .stack-strip { gap: 15px; }
   .work-grid { grid-template-columns: 1fr; gap: 40px; } .work-item:nth-child(2) { margin-top: 0; margin-left: 25px; } .work-item:nth-child(3) { width: 90%; margin-top: 0; } .project-visual { height: 230px; } .work-section { min-height: 1350px; } .contact-section { min-height: 630px; } .contact-section .section-title { font-size: 89px; } .contact-row p { font-size: 13px; max-width: 215px; } .contact-row .contact-button { width: 55px; height: 55px; flex-shrink: 0; } .footer { margin-top: 0; padding-right: 35px; } .footer span:last-child { max-width: 125px; text-align: right; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* ================= KINETIC OVERDRIVE ================= */
+:root { --scroll-skew: 0deg; }
+@keyframes k-float { 0%,100% { transform: translateY(0) rotate(0) } 50% { transform: translateY(-14px) rotate(-1.5deg) } }
+@keyframes k-glitch { 0%,100% { transform: translate(0) skewX(0); text-shadow: 0 0 transparent } 20% { transform: translate(-4px,2px) skewX(-6deg); text-shadow: 6px 0 var(--primary), -6px 0 var(--accent) } 22% { transform: translate(3px,-2px) } 40% { transform: translate(0) } 60% { transform: translate(2px,1px) skewX(4deg); text-shadow: -4px 0 var(--primary) } 62% { transform: translate(0) } }
+@keyframes k-pulse { 0%,100% { transform: scale(1) } 50% { transform: scale(1.06) } }
+@keyframes k-wobble { 0%,100% { rotate: 0deg } 25% { rotate: -4deg } 75% { rotate: 4deg } }
+@keyframes k-shine { from { background-position: -200% 0 } to { background-position: 200% 0 } }
+@keyframes k-spin { to { rotate: 360deg } }
+@keyframes k-rise { from { opacity: 0; transform: translateY(80px) rotateX(-60deg) scale(.85); filter: blur(12px) } to { opacity: 1; transform: none; filter: none } }
+@keyframes k-marquee { to { transform: translateX(-50%) } }
+@keyframes k-spark { to { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0 } }
+@keyframes k-bounce { 0%,100% { transform: translateY(0) } 40% { transform: translateY(10px) } 60% { transform: translateY(-4px) } }
+@keyframes k-hue { 0%,100% { color: var(--primary) } 50% { color: var(--foreground) } }
+@keyframes k-noise { 0%,100% { transform: translate(0,0) } 25% { transform: translate(-3%,2%) } 50% { transform: translate(2%,-3%) } 75% { transform: translate(-2%,-1%) } }
+@keyframes k-breathe { 0%,100% { letter-spacing: 0 } 50% { letter-spacing: .06em } }
+
+.portfolio:not(.motion-reduced) section { transform: skewY(var(--scroll-skew)); transition: transform .1s linear; }
+.portfolio:not(.motion-reduced) .hero-title { animation: k-glitch 2.4s infinite steps(1), k-float 3s ease-in-out infinite; display: inline-block; }
+.portfolio:not(.motion-reduced) .hero-title span { display: inline-block; animation: k-pulse .6s ease-in-out infinite, k-hue 1.2s infinite; }
+.portfolio:not(.motion-reduced) .hero-subtitle { animation: k-breathe 3s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .hero-copy, .portfolio:not(.motion-reduced) .hero-note { animation: k-float 4s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .eyebrow { background: linear-gradient(90deg, var(--foreground), var(--primary), var(--foreground)); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: k-shine 2.5s linear infinite; }
+.portfolio:not(.motion-reduced) .status-dot { animation: k-pulse .5s infinite; }
+.portfolio:not(.motion-reduced) .brand-mark { display: inline-block; animation: k-spin 4s linear infinite; }
+.portfolio:not(.motion-reduced) .brand { animation: k-wobble 2s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .nav-link { display: inline-block; transition: transform .25s cubic-bezier(.3,1.8,.5,1); }
+.portfolio:not(.motion-reduced) .nav-link:hover { transform: translateY(-6px) rotate(-6deg) scale(1.2); color: var(--primary); }
+.portfolio:not(.motion-reduced) .scroll-label svg { animation: k-bounce 1s infinite; }
+.portfolio:not(.motion-reduced) .section-title { animation: k-float 5s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .section-title em { display: inline-block; animation: k-glitch 3s infinite steps(1), k-hue 2s infinite; }
+.portfolio:not(.motion-reduced) .capability svg { animation: k-wobble 1.4s ease-in-out infinite, k-pulse 2s infinite; }
+.portfolio:not(.motion-reduced) .capability:nth-child(2) { animation-delay: .2s; }
+.portfolio:not(.motion-reduced) .stack-strip { animation: k-breathe 2s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .stack-strip span:nth-child(even) { display: inline-block; animation: k-spin 2s linear infinite; }
+.portfolio:not(.motion-reduced) .path-symbol { display: inline-block; animation: k-float 2s ease-in-out infinite, k-wobble 3s infinite; }
+.portfolio:not(.motion-reduced) .path-option:hover .path-symbol { animation: k-spin .6s linear infinite; }
+.portfolio:not(.motion-reduced) .beat-symbol { display: inline-block; animation: k-spin 6s linear infinite; }
+.portfolio:not(.motion-reduced) .beat-content h3 { animation: k-glitch 3.5s infinite steps(1); }
+.portfolio:not(.motion-reduced) .passage-sticky h2 { animation: k-pulse 2s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .ride-button, .portfolio:not(.motion-reduced) .contact-button { animation: k-pulse 1.2s ease-in-out infinite; }
+.portfolio:not(.motion-reduced) .capability, .portfolio:not(.motion-reduced) .path-option, .portfolio:not(.motion-reduced) .ride-button, .portfolio:not(.motion-reduced) .nav-contact, .portfolio:not(.motion-reduced) .contact-button { transition: translate .3s cubic-bezier(.3,1.6,.5,1), rotate .3s; }
+.portfolio:not(.motion-reduced) .capability, .portfolio:not(.motion-reduced) .path-option, .portfolio:not(.motion-reduced) .journey-beat, .portfolio:not(.motion-reduced) .footer { opacity: 0; }
+.portfolio:not(.motion-reduced) .in-view.capability, .portfolio:not(.motion-reduced) .in-view.path-option, .portfolio:not(.motion-reduced) .in-view.journey-beat, .portfolio:not(.motion-reduced) .in-view.footer { animation: k-rise .9s cubic-bezier(.2,1.4,.4,1) forwards; }
+.portfolio:not(.motion-reduced) .in-view.capability:nth-child(2), .portfolio:not(.motion-reduced) .in-view.path-option:nth-child(2) { animation-delay: .15s; }
+.portfolio:not(.motion-reduced) .in-view.capability:nth-child(3), .portfolio:not(.motion-reduced) .in-view.path-option:nth-child(3) { animation-delay: .3s; }
+.chapter-rail a.active { animation: k-pulse .6s infinite; }
+.coordinates { animation: k-breathe 3s ease-in-out infinite; }
+
+.kinetic-bar { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--foreground), var(--primary)); background-size: 200% 100%; animation: k-shine 1.5s linear infinite; transform-origin: left; z-index: 60; pointer-events: none; }
+.kinetic-dot, .kinetic-ring { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 70; border-radius: 999px; }
+.kinetic-dot { width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--primary); }
+.kinetic-ring { width: 40px; height: 40px; margin: -20px 0 0 -20px; border: 1.5px solid var(--primary); mix-blend-mode: difference; }
+.kinetic-spark { position: fixed; width: 8px; height: 8px; margin: -4px; background: var(--primary); border-radius: 2px; pointer-events: none; z-index: 80; animation: k-spark .8s cubic-bezier(.1,.8,.3,1) forwards; }
+.kinetic-marquee { position: fixed; bottom: 0; left: 0; right: 0; overflow: hidden; z-index: 5; pointer-events: none; font-family: var(--font-display); font-size: 18px; color: var(--primary); opacity: .55; white-space: nowrap; border-top: 1px solid var(--border); background: var(--panel-scrim); }
+.kinetic-marquee div { display: inline-block; animation: k-marquee 12s linear infinite; padding: 4px 0; }
+.kinetic-noise { position: fixed; inset: -20%; z-index: 4; pointer-events: none; opacity: .06; background-image: radial-gradient(var(--foreground) 1px, transparent 1px); background-size: 3px 3px; animation: k-noise .3s steps(2) infinite; }
+@media (pointer: coarse) { .kinetic-dot, .kinetic-ring { display: none; } }
